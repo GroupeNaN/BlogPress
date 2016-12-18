@@ -1,0 +1,10 @@
+{% set title = 'Supprimer une catégorie' %}
+{% set subtitle = 'Ce n’est qu’un aurevoir…' %}
+
+{% extends 'layout/article/form.html.twig' %}
+
+{% block form %}
+    <p>Êtes-vous absolument certain de vouloir supprimer la catégorie « {{ category.name }} » ?</p>
+
+    {{ form(form) }}
+{% endblock %}

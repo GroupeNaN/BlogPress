@@ -1,0 +1,37 @@
+{% set title = 'Catégories' %}
+{% set subtitle = 'Qu’est-ce que nous avons de beau ici ?' %}
+
+{% extends 'layout/page.html.twig' %}
+
+{% block content %}
+
+    <table class="table">
+        <caption>Liste des catégories.</caption>
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Nom de la catégorie</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for category in categories %}
+            <tr>
+                <th scope="row">{{ loop.index }}</th>
+                <td>{{ category.name }}</td>
+                <td>
+                    <a href="{{ path('view_category', {'id': category.id }) }}" class="label label-primary" title="Voir la catégorie"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span></a>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('delete_category', {'id': category.id }) }}" class="label label-danger" title="Supprimer la catégorie"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('add_category') }}" class="btn btn-primary">Nouvelle catégorie</a>
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,22 @@
+{% set title = 'Catégorie « ' ~ category.name ~ ' »' %}
+{% set subtitle = 'Qu’est-ce que nous avons de beau ici ?' %}
+
+{% extends 'layout/page.html.twig' %}
+
+{% block content %}
+    {% for article in category.articles %}
+        <div class="post-preview">
+            <a href="{{ path('view_article', {'id': article.id}) }}">
+                <h2 class="post-title">
+                    {{ article.title }}
+                </h2>
+                <h3 class="post-subtitle">
+                    {{ article.subtitle }}
+                </h3>
+            </a>
+            <p class="post-meta">Écrit par {{ article.author.username }} le {{ article.date | date("d/m/Y") }}</p>
+        </div>
+        <hr>
+    {% endfor %}
+
+{% endblock %}

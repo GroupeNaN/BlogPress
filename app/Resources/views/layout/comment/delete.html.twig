@@ -1,0 +1,14 @@
+{% set title = 'Supprimer un commentaire' %}
+{% set subtitle = 'Ce qui doit être fait sera fait…' %}
+
+{% extends 'layout/article/form.html.twig' %}
+
+{% block form %}
+    <p>Êtes-vous absolument certain de vouloir supprimer le commentaire de {{ comment.author }} ?</p>
+
+    <blockquote>
+        {{ comment.content }}
+    </blockquote>
+
+    {{ form(form) }}
+{% endblock %}

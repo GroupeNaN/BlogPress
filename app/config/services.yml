@@ -1,0 +1,17 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/service_container.html
+parameters:
+#    parameter_name: value
+
+services:
+    user_normalizer:
+        class: AppBundle\Serializer\Normalizer\UserNormalizer
+        public: false
+        tags:
+        - { name: serializer.normalizer, priority: 128 }
+
+    category_normalizer:
+            class: AppBundle\Serializer\Normalizer\CategoryNormalizer
+            public: false
+            tags:
+            - { name: serializer.normalizer, priority: 128 }

@@ -1,0 +1,94 @@
+{% set title = article.title %}
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <!-- Post Header -->
+    <header class="intro-header" style="background-image: url('{{ article.background }}')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1>{{ article.title }}</h1>
+                        {% if article.subtitle is defined %}
+                            <h2 class="subheading">{{ article.subtitle }}</h2>
+                        {% endif %}
+                        <span class="meta">Écrit par {{ article.author.username }}
+                            le {{ article.date | date("d/m/Y") }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Post Content -->
+    <article>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    {% for label, flashes in app.session.flashbag.all %}
+                        {% for flash in flashes %}
+                            <div class="alert alert-{{ label }}">
+                                {{ flash }}
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <div class="btn-group" role="group">
+                            <a href="{{ path('edit_article', {'id': article.id}) }}" class="btn btn-primary">Modifier</a>
+                            <a href="{{ path('delete_article', {'id': article.id}) }}" class="btn btn-danger">Supprimer</a>
+                        </div>
+                    {% endif %}
+
+                    <p>
+                        {{ article.content }}
+                    </p>
+
+                    <p>
+                        <small>Catégorie(s) : {% for category in article.categories %}<a href="{{ path('view_category', {'id': category.id}) }}">{{ category.name }}</a>{% if not loop.last %}, {% endif %}{% endfor %}</small>
+                    </p>
+
+                    <hr/>
+
+                    <h3>Commentaires</h3>
+
+                    <div class="comments">
+                        {% for comment in article.comments %}
+                            <div class="row">
+                                <div class="col-md-2">
+                                    {{ comment.author }} <br/>
+
+                                    <small style="font-size: 60%">{{ comment.date | date('d/m/Y H:i') }} </small>
+
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        <a href="{{ path('delete_comment', {'id': comment.id }) }}" class="label label-danger" title="Supprimer le commentaire"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-10">
+                                    <blockquote>
+                                        {{ comment.content }}
+                                    </blockquote>
+                                </div>
+                            </div>
+                        {% else %}
+                            Pas de commentaires… Pour l’instant…
+                        {% endfor %}
+
+                        <hr/>
+
+                        {% if is_granted('ROLE_USER') %}
+                            {{ form(comment_form) }}
+                        {% else %}
+                            <a href="{{ path('fos_user_security_login') }}"><u>Connectez-vous</u> pour ajouter un
+                                commentaire.</a>
+                        {% endif %}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <hr>
+{% endblock %}
